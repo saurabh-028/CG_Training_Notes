@@ -1,0 +1,272 @@
+Day5
+
+
+
+
+
+Static Routing with Next hop method
+
+SYNTAX:	config# ip route unknown nw address   subnet mask   next hop ip add
+
+
+
+
+Collision Domain & B'cast Domain:
+
+Collision Domain is a logical nw where data packets can collide with each other, when sent on shared medium. (Hubs, repeaters)
+
+Broadcast domain is a logical nw where data packet sent by one device will be received by all other devices connected over the nw.
+
+
+1. Hub: CD== 1
+	    BD==1
+
+2.Switch:	CD=== number of active ports==number of cd  (4 active ports then 4 CD)
+		BD=== 1 BD
+
+3. Router: CD==number of active ports==number of cd  (4 active ports then 4 CD)
+		 BD==number of active ports==number of BD
+===========================================================================
+Router/Switch Password Configuration
+
+
+There are 5 types:
+
+1. Normal					to secure privileged mode    (config)#enable password nor@123
+													to remove:
+													# no enable password
+2. Secret(encrypted)		to secure privileged mode	(config)#enable secret sec@123
+3. Console				to secure user exec mode	(config)#line console 0
+												(config-line)#	password cons@123
+												(config-line)#login
+													ctrl+Z
+														exit
+													password:
+																						
+4. Aux					to secure aux window
+5. telnet					to secure telnet connection	(config)#line vty 0 4
+												(config-line)#	password tel@123
+												(config-line)#login
+													
+										To Verify: Goto Pc, open command prompt
+												>telnet <router ip>
+												password: tel@123
+												
+
+
+To Manually encrypt telnet,console & normal pwd:
+config#service password-encryption
+==========================================================================================
+Banner command (motd & login):
+
+192.168.1.0/28			8.8.8.4			255.255.255.240
+
+
+				n=4		16 SN
+				32-28==4
+
+					16  BS
+					14   V IPs
+
+					256-240==16
+
+
+
+
+0			16			32			48		64
+1			17			33
+
+
+
+
+
+
+14			30			46			
+15			31			47
+
+
+
+
+===========================================
+
+192.168.1.48/30			255.255.255.252
+
+
+				BS  4
+
+192.168.1.48					192.168.1.52
+
+		.49							.53
+		.50							.54
+
+
+192.168.1.51					192.168.1.55
+==========================================================================================
+Topics to be covered:
+
+1.Protocols
+2. DTE & DCE:  Data Terminal Equipment & Data Communication Equipment
+								#show controllers s0/0
+
+		Troubleshooting Serial WAN link issues
+			1. encapsulation mismatch
+			2. Clock rate missing(DCE End)
+			
+
+ 1.Protocols			
+
+4. Password Recovery
+6. Introduction to Dynamic Routing
+
+
+
+
+APIPA:
+
+self configured address, in the absence of DHCP Server---> 169.254.x.x
+
+
+Default Routing: 
+1. Used in Stub Network, a network with only one entry/exit point
+2. is used when destination network is unknown, and dont want to drop a packet received at Router's interface.
+3. When router receive a packet for n network, it will simply forward that packet towards exit point.
+
+
+
+Startup-config backup & restore:
+connect a Server with the switch.
+Assign IP and GW address to the Server pc.
+On Server PC:goto services tab---> TFTP---> remove all files.
+On Router:
+	Mumbai#write
+		#copy startup-config tftp
+					10.0.0.3
+				[Mumbai-confg]#	Press Enter to confirm the filename
+
+
+Backup Done............
+
+To restore:
+On Router:
+	#erase startup-config
+	#copy tftp startup-config
+				10.0.0.3
+				Mumbai-confg
+				enter to continue
+
+	#copy startup-config  ruuning-config		(to copy data from NVRAM to DRAM)
+
+
+Restore Done........
+
+
+==============================================================================================
+Flash IOS Backup & restore:
+
+1. connect  a server(200.200.200.2/24, GW:200.200.200.1)
+2. Check the connectivity between Server and Router
+3. On router:
+		#show flash
+					copy the IOS filename
+
+			#copy flash tftp
+				Source Filename:			paste the filename
+				Destination IP:			200.200.200.2
+				Destination Filename		press enter
+
+
+Backup Done................
+
+Restore:
+
+		#del flash
+			paste the filename
+			confirm:yes
+
+		#reload
+
+		rommon1>?			for help
+		rommon2>tftpdnld
+				IP_ADDRESS=200.200.200.1
+				IP_SUBNET_MASK=255.255.255.0
+				DEFAULT_GATEWAY=200.200.200.1
+				TFTP_SERVER=200.200.200.2
+				TFTP_FILENAME=paste the filename
+				tftpdnld
+					y
+
+			rommon10>boot
+
+	Restore Done.........
+
+
+
+
+==========================================================
+4. Password Recovery
+
+			router 		config#enable secret sec@123
+							#end
+							#write
+
+							#reload
+							#enable
+							it will ask for password
+
+to recover the pwd:
+				goto physical tab---power off/on
+
+				goto cli tab---ctrl+c
+				rommon1>?
+				rommon2>confreg 0x2142				to change configuration register value for password recovery(this 														will skip the step of reading nvram)
+				rommon3>boot
+		
+			Basic Setup ..... n
+
+		Router>en
+			config#copy start run
+				#no enable secret				to remove pwd
+				#config-register 0x2102			to set the configuratio register value back to normal mode
+
+				#end
+				#write
+				#reload
+
+				No password will be asked for privileged mode.
+			
+
+
+Boot
+
+			ROM		POST
+					BL---Load IOS---Flash--- DRAM
+					
+				
+					Basic Setup yes/no		n
+						router>
+							router#
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

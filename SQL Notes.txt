@@ -1,0 +1,627 @@
+Install win 2016 server ( Datacenter ) 4gb 60gb,
+
+right click on vm install VM Tool > next > install
+
+server manager > local server > firewall > turn off
+
+server manager > local server > computer name > DBserver > save > restart
+
+cd/dvd > ims > sql2016 > sqlserver 2016 spi > 
+
+filemanager > cd/dvd > double click > system config check > no error (warning ok) > next > installation >
+
+new sql-server stand alone > ʘ specify (evaluation) > next > ✅ i accept > next > next >
+
+✅ uncheck it use microsoft > next > next > next > (turn of firewall) rerun > next > 
+
+✅ database engine ✅ sql server ✅ analysis services ✅ reporting services ✅ client tools connectivity >
+
+next > next > next > ʘ mixed mode > sa , password-Set@123 > add current user > next > add current user > 
+
+next > ʘ install & config > next > install > close
+
+vmedit > options > shared folder > always enabled > add > next > browse > ims soft > ok > next > ✅ enable > finish > ok
+
+filemanager > n/w > vmhost > shared folder > IMSsoft > sql > ssms set up > run > install > close
+
+windows > sql2016 > microsoft sql server management > database engine, DBServer, windows auhtentication > connect > select new query 
+
+======================================================================================================================================================
+SQL
+---
+
+Data Definition Langauage		
+
+> Create
+> Alter
+> Drop
+> Truncate
+
+Data Manipulation Language			
+
+> Insert
+> Update
+> Delete
+
+Data Control Language
+
+> Grant
+> Revoke
+
+Data Query Language
+
+> Select
+
+Transaction Control Language
+
+> Commit
+> Rollback
+> Savepoint
+
+==================================================================================================================
+Creating database
+-----------------
+
+create database StudentDB
+
+Creating table
+--------------
+
+create table student (
+ID int,
+fname varchar(10),
+address varchar(10),
+Deptid int,
+gender varchar(3),
+);
+
+> select everything execute
+
+Inserting data to table
+-----------------------
+
+insert into student (ID,fname,address,Deptid,gender) values (1,'Mahesh','Bangalore',376,'M');
+> execute
+select * from student;
+> execute to display
+
+To delete table
+---------------
+
+drop table student;
+>execute & refresh in datbase studentdb
+
+-----------------------------------------------------------------------------------------------------------------------------
+Primary key & Foreign key
+-------------------------
+
+create table dept (
+deptid int primary key,				->coloumn level [if u write at last primary key (deptid) it is table level]
+deptname varchar(10)
+);
+select * from dept;
+
+insert into dept values (200,'IT'),(201,'HR'),(202,'sales');
+select * from dept;
+
+create table student (
+ID int primary key,
+fname varchar(10),
+address varchar(10),
+deptid int foreign key reference dept(deptid),
+phone int not null,						->not null-no null values(empty)
+gender varchar(3),
+check (gender in ('M','F'))
+);
+
+--------------------------------------------------------------------------------------------------------------------------------
+select, where & Alias
+---------------------
+
+1-> select * from employee;
+    where fname='Ram';
+2-> select fname,lname,deptid from employee;
+3-> select fname+lname as Fullname,salary*12 as CTC from employee;
+4-> select fname+' '+lname as Fullname,salary*12 as CTC from employee;
+
+-------------------------------------------------------------------------------------------------------------------------------
+special keywords
+----------------
+
+> In
+> Between
+> Like
+> Is Null
+
+IN
+--
+
+select * from employee
+where fname in ('tina','raju','mahesh');
+
+Between
+-------
+
+select * from employee
+where salary between 30000 and 45000;
+
+Like
+----
+
+select * from employee
+> where fname like 's%';
+> where fname like 's____';
+> where fname like '%gmail%';
+
+Is Null
+-------
+
+select * from employee
+> where deptid is null;
+> where deptid is not null;
+
+---------------------------------------------------------------------------------------------------------------------
+Keywords
+--------
+
+1-> Top
+select top 5 * from employee;			[display only top 5 list of table]
+
+2-> Distinct
+select distinct deptid from employee;          [selects and display only the unique values]
+
+------------------------------------------------------------------------------------------------------------------------
+Sorting data
+------------
+
+> select empid,fname,salary from employee
+  order by salary;
+> select empid,fname,salary from employee
+  order by salary desc;
+> select empid,fname,salary*12 as CTC from employee
+  order by CTC;
+
+-----------------------------------------------------------------------------------------------------------------------
+Alter
+-----
+add, delete, Modify the table coloumn
+
+> alter table employee
+  add DOB int;
+> alter table employee
+  alter coloumn DOB float;
+> alter table employee
+  drop coloumn DOB;
+
+------------------------------------------------------------------------------------------------------------------------
+Update
+------
+
+> update employee
+  set salary=26000
+  where empid=3;
+> update employee
+  set salary=salary+6000
+  where empid=3;
+
+------------------------------------------------------------------------------------------------------------------------
+To create a new SQL Login Authentication
+----------------------------------------
+
+DBserver > security > logins > right click > new login > name-SQLLogin1 > ʘ sql server > password-Set@123 > ✅ uncheck enforce password policy >
+
+server roles > ✅ public (default) > ok > connect > sql server authentication > login-> SQLLogin1 , Set@123 > connect
+
+
+To create a new Win Login Authentication
+----------------------------------------
+DBserver > security > logins > right click > new login > ʘ win login > search (before create a new user user1 in win2016 computer management) > 
+
+advanced > find now > user1 > ok > server roles > ✅ public default > ok > logout from win and login as user1 > open ssms > connect
+
+-----------------------------------------------------------------------------------------------------------------------------------
+creating user
+-------------
+
+empdb > security > users > right click > new user > ʘ sql server login > Muser > (search) sqllogin1 > ok > schema- ʘ dbo > ok
+
+----------------------------------------------------------------------------------------------------------------------------------
+Permission to user by login using sqllogin1
+-------------------------------------------
+
+empdb > security > users > Muser > right click > properties > securable > search > ʘ all abject (2nd) > ✅ table > ok >
+
+✅ select > coloumn preferences > ✅ empid ✅ fname ✅ deptid > ok > ok
+
+connect > login sqllogin1 > connect > empdb > verify by commands
+
+-----------------------------------------------------------------------------------------------------------------------------------
+Server role creation
+--------------------
+
+DBserver > security > server roles > right click > new server role > name-SRole1 > owner- add SQLLogin1 > ✅ db_database_creator > ok
+
+-------------------------------------------------------------------------------------------------------------------------------------
+Database role ceation
+---------------------
+
+empdb > security > roles > database roles > right click > new database role > name-DBRole1 > owner-Dbo > ✅ db_backup_operator > ok
+
+--------------------------------------------------------------------------------------------------------------------------------------
+Instance
+--------
+-> Default Instance (Already installed one)
+
+-> Named Instance
+
+	This pc > cd/dvd > double click > installation > new sql server > next > next > ʘ perform a new installation > next > ✅ i accept >
+
+next > ✅ DBengine ✅ sql server replication ✅ client tool connectivity (default) > next > ʘ named instance > name-Inst1, click on instance id 
+
+(auto generates id) > next > ʘ mixed mode > password-Set@123 > add current user > next > install > close
+
+windows > ssms > browse for more > select dbserver\inst1 > win authentication > connect > also connect main dbserver > to it again
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Query
+-----
+-> SubQuery / Inner Query
+
+> single row
+	select * from employee
+	where deptid=
+	( select deptid from employee
+	  where fname='Mahesh' );
+
+> Multi row
+	select * from employee
+	where salary > any            -> [use any or all]
+	( select salary from employee
+	  where fname='Tina' );
+
+-> Corelated Query
+	select * from employee emp1
+	where 2=				-> [2=2nd highest salary]
+	( select count(emp2.salary) from employee emp2
+	  where emp2.salary>=emp1.salary );
+
+functions:
+
+select sum(salary) as tot,max(salary) as maxs,min(salary) as mins,avg(salary) from employee
+
+assignment-
+
+1) findout fname from emptable who are working in IT department (Inner Query)
+
+> select fname from employee
+  where deptid=
+  ( select deptid from dept
+  where deptname='IT' );
+
+2) findout emp details whose salary is greater than the avg salary of department (Corelated Query)
+
+> select * from employee
+  where salary > 
+  ( select avg(salary) from employee as emp1
+  where emp1.deptid=employee.deptid );
+
+3) findout the avg salary of each department
+
+> select deptid,avg(salary) as avgsal from employee
+  group by deptid
+  having avg(salary) > 27000;
+
+----------------------------------------------------------------------------------------------------------------------------------
+Views
+-----
+
+> create view emp200 as
+  select empid,fname+' '+lname as fullname,salary*12 as CTC from employee;
+  select * from emp200;
+  
+----------------------------------------------------------------------------------------------------------------------------------
+Joins
+-----
+
+-> Inter Joins
+	> select fname,deptname from emp e,dept d
+	  where e.deptid=d.deptid;
+
+	> select fname,deptname from emp e join dept d
+	  on e.deptid=d.deptid;
+
+-> Outer Joins
+
+> Left outer join
+	select fname,deptname from emp e left outer join dept d
+	on e.deptid=d.deptid;
+
+> Right outer join
+	select fname,deptname from emp e right outer join dept d
+	on e.deptid=d.deptid;
+
+> Full outer join
+	select fname,deptname from emp e full outer join dept d
+	on e.deptid=d.deptid;
+
+-> Self join
+	> select w.fname as worker,m.fname as manager from employee w join employee m
+	  on w.managerid=m.empid
+
+------------------------------------------------------------------------------------------------------------------------------------
+Constraints
+-----------
+
+1) By Creating table
+2) By Alter table
+
+types
+-> primary key
+alter table tb1
+add constraint pk_tb1_id primary key (ID);
+
+-> Foreign key
+
+-> Not null
+alter table tb1
+alter column id not null;
+
+-> Unique
+alter table tb1
+add constraint uq_tb1_pho unique (phone);
+
+-> Check
+-alter table tb1
+add constraint ck_tb1_gen check (gender in ('M','F'));
+
+---------------------------------------------------------------------------------------------------------------------------------------
+Index
+-----
+-> Clustered Index   -[only one in table ie primary key]
+
+-> Non Clustered Index   -[999]
+	> create non clustered index ind_fname on tb1(fname);
+
+---------------------------------------------------------------------------------------------------------------------------------------
+Audit
+-----
+(Create a folder in cdrive name-Audit)	
+
+DBserver > security > Audits > right click > new Audit > name-Audit1, ʘ continue > browse select that audit created folder > ʘ maxm rollover >
+ok > right click > enable 
+
+DBserver > security > Server Audits specification > right click > new Server Audits specification > Name-Server Audits specification1 , select Audit1 >
+select 1️⃣ failed login group 2️⃣ sucessful login group > ok > right click > enable
+
+do login or connect to sqllogin1 by giving wrong password and login with correct password now go to audit > right click > view reports
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Import & Export
+------------
+
+-> Wizard
+    ------
+empdb > right click > task > export data > next > select sql server native client , dbserver > new > name-newempdb > ok > next > next >
+
+✅ select required table > next > ✅ run immediately > next > finish > close
+
+-> Bulk Insert
+   -----------
+create table tb1 (
+id int,
+fname varchar(10),
+lname varchar(10)
+);
+
+select * from tb1
+create a data folder in fie manager in c drive in that create a.txt file in that edit
+
+id,fname,lname
+1,bob,t
+2,tina.j
+3,lily,r
+
+save it and go to view in above ✅ view file extension change it to a.csv
+now goto ssms
+
+bulk insert tb1
+from 'c:\data\a.csv'
+with (
+fieldterminator=',',
+rowterminator='\n',
+firstrow=2
+);
+
+select * from tb1
+
+-> BCP
+   ---
+syntax - databasename.schemaname.tablename  
+	   bangdb.dbo.tb1
+
+open command prompt
+administrator > bcp (enter)
+		  > bcp bangdb.dbo.tb1 out c;\data\b.txt -c -T
+
+goto ssms type- truncate table tb1
+
+command prompt
+administrator > bcp bangdb.dbo.tb1 in c;\data\b.txt -c -T
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Extended events
+---------------
+
+DBserver > management > extended events > session > right click > new session wizard > next > name-dbsession > next > next > add- database_created,
+
+database_dropped, database_attached, database_detached > next > ✅ database-name ✅ database-id ✅ username ✅ tasktime > next > next > ✅ save data to
+
+(browse folder)select data > filename-dbsession.xel > ok > next > (script if needed) > finish > close > right click > start session > right click > watch live
+
+now -> create database db2
+	 drop database db2
+	 
+	 right click on database db1 detach
+	 goto database(main) right click attach > add database db1 > ok
+	
+	 now check in watch live and saved file both
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Database mail
+-------------
+
+DBserver > management > DBmail > configure db mail > next > ʘ setup > next > yes > name-sqldbmail > add > name-sqldbmail , email-xyz@gmail.com,
+
+xyz , server-mail.cg.com > basic authentication, name-xyz@cg.com , password-Set@123 > ok > next > public✅, yes > next > next > finish > close >
+
+right click > sent test mail > to-abc@cg.com > send > ok
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+SQL Server Agent
+----------------
+
+-> Operators
+   ---------
+DBserver > SQL Server Agent > right click > start > yes > expand > operators > right click > new operator > name-OP1 > email-op1@cg.com > ok
+
+-> Alerts
+   ------
+DBserver > SQL Server Agent > right click > start > yes > expand > Alerts > right click > new Alerts > name-Alert1 , sql server event alert, 
+
+all database > ʘ severity-Missallaneous system > next > response > ✅ notify operation > ✅ email op1 > ok
+
+-> Jobs
+   ----
+task- Insert data into table after every 10sec
+
+create table tb2 (
+id int identity(1,1),
+number float,
+timestamp datetime
+);
+
+insert into tb2 (number,timestamp)
+select rend(),getdate();                 -> copy 2 line
+
+
+DBserver > SQL Server Agent > right click > start > yes > expand > Job > right click > new Job > name-Job1 > steps > new > name-step1 > 
+
+type-Transact sql script > select database bangdb > paste command > parse > ok > schedule > new > name-Sch1 > type- recurring > occurs >
+
+daily, ʘ occur every- 10sec , set start time > ok > notification > ✅ write to win , when job succeds > ok
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+SQL Profiler
+------------
+SSMS > tools > Sqlserver profiler > connect > ✅ save to file > (browse) create a folder trace > save in it > event selection > run
+
+run some query in ssms & check it in this by pause it 
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+Tuning Advisor
+--------------
+SSMS > tools > tuning advisor > connect > browse > select that trace file > master > ✅ name > tuning options > ✅ non clustered > advanced >
+
+✅ define max space- 50 > ok > start analysis
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+Backup
+------
+create database cgdb
+create table rd (
+c1 int identity,
+c2 varchar(20)
+);
+
+insert into rd values ('Initial data: Trans1'); 
+
+-> full backup (create a new folder in cdrive for backup)
+   -----------
+backup database cgdb
+to disk='c:\bkf\cg_full.bak'
+with init;
+
+insert into rd values ('Trans2'); 
+insert into rd values ('Trans3');
+
+-> Transaction log backup
+   ----------------------
+backup log cgdb
+to disk='c:\bkf\cg_log1.bak'
+with init;
+
+insert into rd values ('Trans4'); 
+insert into rd values ('Trans5');
+
+(again log backup)
+
+backup log cgdb
+to disk='c:\bkf\cg_log2.bak'
+with init;
+
+delete database cgbd
+
+to restore
+----------
+-> restore database cgdb
+   from disk='c:\bkf\cg_full.bak'
+   with replace,no recovery;
+
+-> restore log cgdb
+   from disk='c:\bkf\cg_log1.bak'
+   with no recovery;
+
+-> restore log cgdb
+   from disk='c:\bkf\cg_log2.bak'
+   with no recovery;
+
+-> restore database cgdb
+   with recovery;
+
+Differential Backup
+-------------------
+CGDB > right click > task > backup > differential > ʘ DB > disk > add > select that bkf folder name-diff.bak > ʘ append to the exis > backup opt >
+
+name-diff > ok > ok
+
+to restore -> cgdb > right click > task > select ✅ file of cgdb diff > files > ok
+----------
+ 
+-------------------------------------------------------------------------------------------------------------------------------------------
+Encryption
+----------
+
+(Masterkey, coloumn level encryption key, certification key)
+
+-> cgdb > security > always encryted key > right click > new coloumn master key > name-Masterkey1 > generate certificate > ok
+
+-> cgdb > security > always encryted key > right click > new coloumn encryption key > name-CEK1 > Masterkey1 > ok
+
+cgdb > table > coloumn > c2 > right click > encrypt coloumn > next > ✅ c2, right click > encrypt coloumn > next > ✅ c2, deterministic, CEK1 >
+
+next > next > ʘ proceed to finish now > next > finish > ok > close
+
+select * from rd (it shows encryted) 
+
+-> logout & close & open ssms > connect > options > addition connection parameter > (type) Coloumn Encryption Setting=Enabled > connect > 
+
+select * from rd (it shows decrypted)
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Storage procedure
+-----------------
+cgdb > programmability > store procedure > right click > new
+
+or it can be done by query method
+
+-> go
+   create procedure Sp_select
+   as
+   begin
+   select * from rd
+   end
+   go
+
+-> execute Sp_select
+
+===========================================================================================================================================

@@ -1,0 +1,485 @@
+Oracle DB
+
+Install Win server 2012 New(Standard), 8gb-60gb ʘ multiple, no of processor=2-1, install
+
+right click vm > install vmware tools > restart
+
+edit vm > cd/dvd > IMS > orace 12c iso > ok
+
+filemanager > cd/dvd > copy the oracle file to desktop > extract both files of winx64 > after extracting delete that zip files now open extracted file
+
+winx64(2,2) > database > components > (copy 5 files)
+
+winx64(1,2) > database > stage > components > (136 files) paste that 5 copied files so total is 141 files now delete that winx64(2,2)
+
+winx64(1,2) > database > setup > right click > run as administrator > ✅ uncheck it > next > yes > next > ʘ server class > next > next >
+
+next > ʘ use win built in account > next > yes > dbname-orcl, password-Oracle1, ✅  uncheck create as container > next > yes >
+
+(prerequisite check) > install > ok > close
+
+command prompt > right click > run administrator
+--------------
+administrator > net start
+		  > set ORACLE_SID=ORCL
+		  > SQLPLUS / as sysdba
+SQL > select name,open_mode from v$database;
+SQL > exit
+
+administrator > DBCA	->[To create new database using default mode]
+
+ʘ create db > next > dbname-Trainer, password-Oracle1, ✅  uncheck create as container > next > yes > finish > ok
+
+administrator > net start
+		  > set ORACLE_SID=Trainer
+		  > SQLPLUS / as sysdba
+SQL > select name,open_mode from v$database
+SQL > exit
+
+administrator > DBCA	->[To create new database using advanced mode]
+
+ʘ create db > next > ʘ Advanced mode > next > next > name-capg > next > SYS-> password Oracle1, SYSTEM-> password Oracle1 > next > next > 
+
+next > next > next > ✅ generate > next > finish
+
+
+administrator > net start
+		  > set ORACLE_SID=Capg
+		  > SQLPLUS / as sysdba
+SQL > select name,open_mode from v$database
+SQL > exit
+
+=========================================================================================================================================================
+Startup
+-------
+
+-> Startup NoMount
+-> Startup Mount
+-> Startup Open
+
+
+
+Sutdown
+-------
+
+-> Normal
+-> Immediate
+
+Simple commands of startup and shutdown-
+
+SQL> shutdown;
+SQL> startup;
+SQL> select name from v$database;
+SQL> select instance_name from v$database;
+SQL> select status,instance_name from v$database;
+SQL> shutdown immediate;
+SQL> startup nomount;
+SQL> shutdown transactional;
+SQL> startup mount;
+SQL> shutdown abort;
+SQL> startup open;
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+Pfile (Parameter file)
+SPfile (Server Parameter file)
+
+SQL> show parameter spfile
+SQL> create pfile from spfile
+SQL> shutdown immediate
+
+filemanager > cdrive > app > administrator > product > 12.1.0 > dbhome_1 > database > (INITORCL.ORA-PFILE) (SPFILEORCL.OCA) Copy this path
+
+SQL> startup pfile=paste path\ INITorcl.ORA;
+SQL> show parameter spfile;
+SQL> show parameter pfile;
+SQL> show parameter process;
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Table space
+-----------
+SQL> select tablespace_name,contents from dba_tablespaces;
+SQL> create tablespace tbs1 datafile 'tbs1_data.dbf' size 3m;
+SQL> select file_name from dba_data_files;
+SQL> desc dba_data_files;
+SQL> desc dba_tablespaces;
+SQL> select tablespace_name,file_name,bytes / 1024/ 1024 MB from dba_data_files;
+SQL> Alter database datafile 'TBS1_data.dbf' resize 10m;
+SQL> select tablespace_name,file_name,bytes / 1024/ 1024 MB from dba_data_files;
+SQL> create tablespace tbs2 datafile 'tbs2_data.dbf' size 1m autoextend on next 10m maxsize 500m;
+SQL> select tablespace_name,file_name,bytes / 1024/ 1024,autoextensible from dba_data_files;
+SQL> Alter tablespace tbs1 rename to tbs10;
+SQL> select tablespace_name,file_name,bytes / 1024/ 1024 MB from dba_data_files;
+SQL> Alter database move datafile 'tbs1_data.dbf' to 'tbs5_data.dbf';
+SQL> select tablespace_name,file_name,bytes / 1024/ 1024 MB from dba_data_files;
+SQL> Drop tablespace tbs10;
+SQL> select tablespace_name,file_name,bytes / 1024/ 1024 MB from dba_data_files;
+
+To create temporary tablespace
+
+SQL> create temporary tablespace Temp03 tempfile 'temp03_data.dbf' size 10m;
+SQL> select tablespace_name,file_name,bytes / 1024/ 1024 MB from dba_data_files;
+
+To create undo tablespace
+
+SQL> create undo tablespace undotbs06 datafile 'undotabs06_data.dbf' size 10m;
+SQL> select tablespace_name,file_name,bytes / 1024/ 1024 MB from dba_data_files;
+
+To create Big file Table space
+
+SQL> create bigfile tablespace bs01 datafile 'bs01_data.dbf' size 1000m;
+SQL> select tablespace_name,contents,extent_management,bigfile from dba_tablespaces;
+SQL> select tablespace_name,status,contents from user_tablespaces;
+
+To make table space offline & online
+
+SQL> Alter tablespace tbs2 offline;
+SQL> select tablespace_name,status,contents from user_tablespaces;
+SQL> Alter tablespace tbs2 online;
+SQL> select tablespace_name,status,contents from user_tablespaces;
+
+Command for Read only Table space
+
+SQL> Alter tablespace tbs2 read only;
+SQL> select tablespace_name,status,contents from user_tablespaces;
+SQL> Alter tablespace tbs2 read write;
+SQL> select tablespace_name,status,contents from user_tablespaces;
+
+To create user
+
+SQL> create user ben identified by ben quota 10m on users;
+SQL> create user bill identified by bill quota 20m on users;
+SQL> conn sys/ as sysdba;
+password-Oracle1
+connected
+SQL> show user
+SQL> grant create session to ben;
+SQL> conn ben/ben
+SQL> show user
+SQL> conn sys/ as sysdba
+SQL> show user
+SQL> select * from all_users;
+
+To create roles and assigning privileges to users
+-------------------------------------------------
+
+SQL> create role it_manager identified by abc;
+SQL> grant create table,create session to it_manager;
+SQL> grant it_manager to ben,bill;
+
+(for coloumn arrangements)
+SQL> column grantee for a10
+SQL> column granted_role for a15
+SQL> column admin_option for a20
+
+SQL> select grantee,granted_role,admin_option from dba_role_privs where granted_role='IT_MANAGER';
+SQL> select role,privilege from role_sys_privs;
+SQL> select role,privilege from role_sys_privs where role='IT_MANAGER';
+
+(for coloumn arrangements)
+SQL> column role for a20
+SQL> column privilege for a20
+
+SQL> set role it_manager identified by abc;
+SQL> drop role it_manager;
+
+To create user Admin
+
+SQL> create user admin identified by admin123 quota 10m on users;
+SQL> grant create table,create session to admin;
+SQL> select privilege from dba_sys_privs where grantee='ADMIN';
+SQL> revoke create table from admin;
+SQL> select privilege from dba_sys_privs where grantee='ADMIN';
+
+TO drop user 
+
+SQL> drop user admin cascade;
+
+-----------------------------------------------------------------------------------------------------------------------
+Profiles
+--------
+profile management:-
+	> Password management
+	> Resource management
+
+SQL> show parameter resource_limit;
+
+if value is false execute command else no need
+SQL> alter system set resource_limit=true scope=both;
+
+SQL> select distinct resource_name from dba_profiles;
+SQL> create user suresh identified by suresh123 quota 10m on users;
+SQL> create profile my_profile limit
+2	failed_login_attempts 3
+3	password_lock_time 1
+4	password__life_time 30
+5	sessions_per_user 1
+6	idle_time 5;
+SQL> Alter user suresh profile my_profile;
+SQL> grant create session to suresh;
+SQL> conn suresh/abc                           (give wrong password 3 times)
+SQL> conn suresh/abc 
+SQL> conn suresh/abc 
+SQL> conn suresh/abc        			     (account is locked)
+SQL> conn sys /as sysdba
+password-Oracle1
+connected
+SQL> Alter user suresh account unlock;
+SQL> conn suresh/suresh123
+SQL> show user
+SQL> conn sys /as sysdba
+SQL> show user
+SQL> Alter profile my_profile limit sessions_per_user 3;
+SQL> Alter profile my_profile limit failed_login_attempts 2;
+SQL> select username,profile from dba_users where username='SURESH';
+SQL> drop profile my_profile cascade;
+SQL> drop user suresh cascade;
+
+-----------------------------------------------------------------------------------------------------------------------
+Listner
+-------
+administrator> lsnrctl
+LSNRCTL> status
+LSNRCTL> stop
+LSNRCTL> start
+
+filemanager > cdrive > app > administrator > product > 12.1.0 > dbhome_1 > network > admin > listner.ora (notepad)
+
+LSNRCTL> exit
+administrator> netca
+	next > next > name-LISTENER2 > next > select TCP > next > ʘ use another port no 1522 > next > ʘ no > next > next > next > finish
+
+administrator> set ORACLE_SID=ORCL
+		 > SQLPLUS / as sysdba
+SQL> conn sys/oracle@192.168.84.163:1522/ ORCL as sysdba
+
+filemanager > cdrive > app > administrator > product > 12.1.0 > dbhome_1 > network > admin > listner.ora (notepad) > Listener(Edit in this) > SID_NAME=ORCL
+
+administrator> lsnrctl
+LSNRCTL> stop listener2
+LSNRCTL> start
+LSNRCTL> status
+SQL> conn sys/oracle@192.168.84.163:1521/ORCL as sysdba
+SQL> conn sys/oracle@localhost:1521/ORCL as sysdba
+
+TNSname File
+------------
+filemanager > cdrive > app > administrator > product > 12.1.0 > dbhome_1 > network > admin > tnsfile
+
+--------------------------------------------------------------------------------------------------------------------------------
+Archive mode/No Archive mode
+----------------------------
+
+-> Archive log mode
+   ----------------
+administrator> set ORACLE_SID=ORCL
+		 > SQLPLUS / as sysdba
+SQL> startup mount
+SQL> shutdown immediate
+SQL> startup mount
+SQL> Alter database archivelog;
+SQL> Alter database open;
+SQL> Archive log list;
+SQL> select log_mode from v$database;
+
+-> NO Archive log mode
+   -------------------
+administrator> set ORACLE_SID=ORCL
+		 > SQLPLUS / as sysdba
+SQL> startup mount
+SQL> shutdown immediate
+SQL> startup mount
+SQL> Alter database noarchivelog;
+SQL> Alter database open;
+SQL> Archive log list;
+SQL> select log_mode from v$database;
+
+----------------------------------------------------------------------------------------------------------------------------------
+Manual database creation
+------------------------
+administrator> Mkdir c:\ordb\datafile
+administrator> Mkdir c:\ordb\contrlfile
+administrator> Mkdir c:\ordb\logfile
+administrator> Mkdir c:\ordb\adump
+administrator> Mkdir c:\ordb\pfile
+administrator> Mkdir c:\ordb\diag
+administrator> Mkdir c:\ordb\fast_recovery_area
+
+administrator> set ORACLE_SID=ORDB
+		 > ORADIM -new -sid ordb
+		 > orapwd file=%ORACLE_HOME%\database\pwdordb.ora password=pass123
+		 > set ORACLE_SID=ORDB
+		 > SQLPLUS /pass123 as sysdba
+
+copy the pfile from other database inside the folder c:\ordb\pfile then edit according to the path
+
+SQL> create spfile from pfile='c;\ordb\pfile\INITordb.ora';
+SQL> startup nomount
+
+SQL> create database ordb
+     user sys identified by pass123
+     user system identified by pass123
+     logfile group 1 'c:\ordb\logfile\redo1.log' size 50m,
+     		 group 2 'c:\ordb\logfile\redo2.log' size 50m,
+     		 group 3 'c:\ordb\logfile\redo3.log' size 50m
+     datafile 'c:\ordb\datafile\system1.dbf' size 400m
+     sysaux datafile 'c:\ordb\datafile\sysaux.dbf' size 300m
+     undo tablespace undotbs1 datafile 'c:\ordb\datafile\undo1.dbf' size 300m
+     default temporary tablespace temp tempfile 'c:\ordb\datafile\temp01.dbf' size 200m;      (create a folder ordb before executing this command in  
+																cdrive > app > administrator > oradata and execute it now)
+SQL> @%ORACLE_HOME%\rdbms\admin\catalog.sql
+SQL> @%ORACLE_HOME%\rdbms\admin\catproc.sql
+
+SQL> connect system/pass123
+SQL> @%ORACLE_HOME%\sqlplus\admin\pupbld.sql
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Automatic Workload Repository (AWR report)
+------------------------------------------
+Administrator> set orcl_sid=orcl
+		 > sqlplus sys/pass123 as sysdba
+
+cdrive > app > administartor > product > 12.1.0 > dbhome > RDBMS > ADMIN (copy path)
+
+SQL> @(paste path)\awrrpt.sql
+   > report_type: html
+   > num_days: 3
+   > begin_snap: 86
+   > end_snap: 95
+   > report_name:c:\myAWRreport.html
+
+goto filemanager check the file & also open ADDM(Automatic Database Diagnostic Monitor)
+
+--------------------------------------------------------------------------------------------------------------------------------------
+Flashback
+---------
+Administrator> set ORACLE_SID=ORCL
+		 > SQLPLUS / as sysdba
+
+SQL> Alter system set db_recovery_file_dest_size=1024m;
+SQL> Alter system set db_recovery_file_dest='c:\app\Administrator\fast_recovery_area\capg';
+SQL> select name,open_mode,log_mode,flashback_on from v$database;
+SQL> shutdown immediate
+SQL> startup mount
+SQL> Alter database Archivelog;
+SQL> Alter database flashback on;
+SQL> Alter database open;
+SQL> select name,open_mode,log_mode,flashback_on from v$database;
+SQL> create table emp(id number(10));
+SQL> insert into emp(id) values(1);
+SQL> commit;
+SQL> drop table emp;
+SQL> show recycle bin;
+SQL> flashback table emp to before drop;
+
+---------------------------------------------------------------------------------------------------------------------------------------
+SCN(System Change NO)
+---------------------
+Administrator> set ORACLE_SID=ORCL
+		 > SQLPLUS / as sysdba
+
+SQL> Alter system set db_recovery_file_dest_size=1024m;
+SQL> Alter system set db_recovery_file_dest='c:\app\Administrator\fast_recovery_area\capg';
+SQL> select name,open_mode,log_mode,flashback_on from v$database;
+SQL> shutdown immediate
+SQL> startup mount
+SQL> Alter database Archivelog;
+SQL> Alter database flashback on;
+SQL> Alter database open;
+SQL> select name,open_mode,log_mode,flashback_on from v$database;
+SQL> select current_scn from v$database;
+SQL> create table TB(name varchar2(30));
+SQL> insert into TB values('Satish');
+SQL> select * from TB;
+SQL> commit;
+SQL> select current_scn from v$database;
+SQL> drop table TB;
+SQL> shutdown immediate
+SQL> startup mount
+SQL> flashback database to scn 299636;
+SQL> Alter database open resetlogs;
+SQL> select * from TB;
+
+-----------------------------------------------------------------------------------------------------------------------------------
+RMAN Tool
+---------
+> Hot Backup  (Archive & database up)
+> Cold Backup (No Archive & database down)
+
+Administrator> set ORACLE_SID=CAPG
+		 > SQLPLUS / as sysdba
+SQL> Archive log list;
+SQL> select tablespace_name from dba_tablespaces;
+SQL> create tablespace tbs1 datafile 'tbs1_data.dbf' size 3m;
+SQL> select tablespace_name from dba_tablespaces;
+
+open one more command prompt tab
+
+administrator> rman
+RMAN> connect target /
+RMAN> report schema;
+RMAN> list backup;
+RMAN> backup tablespace tbs1;
+RMAN> list backup;
+RMAN> backup datafile 8;
+
+delete the backup file in the backup path
+
+RMAN> Crosscheck backup;
+RMAN> list backup;
+RMAN> delete expired backup;
+	>yes
+RMAN> backup datafile 8;
+RMAN> backup datafile 8;
+RMAN> backup datafile 8;
+RMAN> report obsolete;
+RMAN> delete obsolete;
+	>yes
+RMAN> backup database;
+RMAN> list backup;
+
+create folder backup in cdrive
+
+RMAN> backup database format 'c:\backup\full_backup.dbf';
+RMAN> list backup;
+
+check in file manager
+
+========================================================================================================================================================================================================================
+
+
+
+ALTER DATABASE DEFAULT TEMPORARY TABLESPACE tbs_temp_01
+
+GRANT CONNECT, RESOURCE TO -----
+
+
+--------------------
+
+SHOW PARAMETER spfile;
+copy path 
+ 
+Create pfile from spfile='path';
+
+shut immediate;
+
+Startup pfile=c:\app\database\initorcl.ora
+
+show parameter spfile
+
+shut immediate
+
+c - app- database
+
+Edit pfile-> find control file->control1, control2
+
+make copy of control file
+
+show parameter control_files;
+
+copy c:\App\oradata\orcl\control01.ctl c:\App\oradata\orcl\control02.ctl 
+
+ 
+startup pfile = c:\app\database\initorcl.ora
+
+
+

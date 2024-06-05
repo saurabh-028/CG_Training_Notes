@@ -1,0 +1,394 @@
+Good Morning Everyone....
+
+
+:Supernetting/Route Summarization
+=================================
+1. Combining multiple routing table entries into single entry is known as Route Summarization
+
+2. There are 2 types of Route Summarization
+		a. Manual
+		b. Auto
+
+
+Advantages of Route Summarization:
+=================================
+1. Saves Router's Memory, as we are storing a summarized route informantion
+2. Save NW Bandwidth as need to share only one entry with the neighbor devices.
+		
+		192.168.100.0/20		Supernetting	
+		192.168.100.0/24		Networking
+		192.168.100.0/28		Subnetting
+============================================================================
+VLSM:Variable Length Subnet Mask---- reduces the wastage of IP addresses
+
+CLSM/FLSM	: Constant LSM/Fixed LSM
+
+						V IPs
+/25		128				126
+/26		64				62
+/27		32				30
+/28		16				14
+/29		8				6
+/30		4				2
+
+
+
+	
+
+
+25 users		/27				
+10 Users		/28
+50 Users		/26
+Wan1			/30		
+
+Wan 2		/30
+==========================================================================================
+
+IT:		 61 Users
+Sales:	26 Users
+Finance:	14 Users
+HR:		9 Users
+Admin:	4 Users
+WAN1:	2 IPs
+WAN2:	2 IPs
+
+
+
+
+IT:( 61 Users)  	192.168.200.0/26--------------------------------------(192.168.200.1-----192.168.200.62)			
+				255.255.255.192		64  BS
+
+
+192.168.200.0				192.168.200.64
+192.168.200.1
+
+
+
+
+192.168.200.62
+192.168.200.63
+
+================================================================================
+Sales:	26 Users	
+
+			192.168.200.64/27---------------------------------------(192.168.200.65-------192.168.200.94)			
+					255.255.255.224			32  BS
+
+
+192.168.200.64					192.168.200.96
+192.168.200.65
+
+
+
+
+
+192.168.200.94
+192.168.200.95
+
+============================================================================================================
+
+3. Finance:	(14 Users)      
+			
+				 192.168.200.96/28		--------------(192.168.200.97-----192.168.200.110)
+				 255.255.255.240			16  BS
+
+
+
+
+192.168.200.96				192.168.200.112
+192.168.200.97
+
+
+
+
+192.168.200.110
+192.168.200.111
+=====================================================================================================
+
+HR:		(9 Users)			----------------------------  (192.168.200.113----------192.168.200.126)
+
+			192.168.200.112/28
+							BS	16
+
+192.168.200.112			192.168.200.128
+
+
+
+
+
+192.168.200.127
+=================================================================================================
+
+Admin:	4 Users		----------------					(192.168.200.129------192.168.200.134)
+					192.168.200.128/29
+							BS  8
+
+192.168.200.128			192.168.200.136	
+
+192.168.200.129							
+
+
+
+192.168.200.134
+
+192.168.200.135
+=================================================================================================
+WAN1:	2 IPs						192.168.200.137----192.168.200.138		
+					192.168.200.136/30
+					BS	4
+
+
+192.168.200.136			192.168.200.140
+
+
+192.168.200.137
+
+
+192.168.200.138
+
+192.168.200.139
+
+
+
+
+
+=================================================================================================
+WAN2:	2 IPs								192.168.200.141----192.168.200.142					
+				192.168.200.140/30
+							
+							BS	4
+
+
+192.168.200.140			192.168.200.144
+
+
+192.168.200.141
+
+192.168.200.142
+
+
+192.168.200.143
+==========================================================================================
+
+
+Router Interfaces:
+
+ethernet   e0			10mbps
+fast ethernet   fa0		100mbps
+Gigabit ethernet		gi0	1gbps				LAN interface  (pc, switch, hub)
+
+
+
+WAN interface		serial interface	s0		to provide wan link  (to connect modem/router)
+
+console  port:			to access/configure routers & switches
+
+aux port				can act as a console port,  connecting modems
+
+aui					attachement unit interface  LAN port
+pri/bri	ISDN			primary rate interface/basic rate interface
+
+Modular router		add/remove slots/cards as per requirements
+
+fixed router		
+
+
+
+
+Simulator:
+
+BOSON
+Cisco PT  8.x
+
+GNS
+
+
+
+Initial configuration : no
+
+Router>	enable									user execution mode
+
+
+Router#config terminal								privileged mode
+
+
+Router(config)#	interface fastethernet 0/0			Global configuration mode
+
+
+
+
+Router(config-if)#										interface mode
+
+Router(config-line)#  
+
+
+
+
+
+
+On Router0
+==========
+Router>enable
+Router#config terminal
+Router(config)#interface fastethernet 0/0
+Router(config-if)#ip add 10.0.0.1 255.0.0.0
+Router(config-if)#no shutdown
+Router(config-if)#exit					//to come out of current mode
+Router(config)#interface serial0/0/0
+Router(config-if)#ip add 20.0.0.1 255.0.0.0
+Router(config-if)#no shutdown
+Router(config-if)#end					//to jump to privileged mode
+Router#show running-config				//to see the running configuration on DRAM		
+Router#show ip int brief				//shows the interface status alongwith IP add configuration in tabular format
+===================================================================================
+1.Router Internal Components
+
+1. ROM		POST, Boot Loader , Mini IOS, Rom Monitor(ROMMON)   troubleshooting mode
+2. DRAM	running-config  	Dynamic RAM:	temp memory---- running configuration				#show running-config
+3. NVRAM  startup-config  NON Volatile  permanent storage								#write  (copy DRAM infn into NVRAM)
+																	#copy  running-config   startup-config
+4. Flash Memory		contains IOS-  (Internetwork OS)
+5. Circuit board
+
+========================================================
+2.Router Booting Process
+3. Basic Commands
+4. Routing
+
+
+Collision Domain and Bcast Domain
+
+
+
+
+
+
+init 0-6
+
+init 5(GUI+CLI)
+
+
+init 1		single user mode
+
+init 0			
+
+
+===============================================================
+Basic Commands
+
+1. # show version:   shows hw , sw and firmware details alongwith Configuration register value.
+2. #write:				save running configuration into NVRAM
+3. #copy running-config  startup-config		or #copy run   start
+4. #show flash			shows Flash memory details (like IOS filename, size etc)
+5. #show clock
+6. #clock set 17:05:30  27 Jan 2023
+7. #show startup-config		shows saved configuration of NVRAM
+
+8. #show interfaces			shows the detailed information about each interface available.
+9. #show protocols
+10. #show ip protocols
+11. #erase startup-config		to delete saved configuration (from NVRAM)
+
+========================================================================
+
+/27		BS 32
+192.168.1.0			32			
+
+192.168.1.1			33
+
+
+		30			62
+
+192.168.1.31			63
+
+
+
+=====================================================================
+
+Routing:	A process of transferring a data packet from source to destination through an Internetwork.
+
+
+It has three tasks.
+1. Searching for the available nws and the best possible ways to reach to those nws 
+2. Specifying the path/route to reach to the destination nw
+
+
+3. Forwarding the packet over define path.
+
+
+Three types of Routing
+1. Static Routing
+2. Default Routing
+3. Dynamic Routing
+
+
+1. Static Routing:
+
+					ways of Static Routing
+						1. Self exit Method
+						2. Next Hop Method
+
+		
+
+
+
+
+
+
+172.16.112.0/25			255.255.255.128
+
+				n=9		2^9==512 Su
+8.8.8.1
+				128 BS  126 V IPs
+
+
+
+172.16.112.0			172.16.112.128
+
+
+
+
+172.16.112.126
+172.16.112.127	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

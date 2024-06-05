@@ -1,0 +1,477 @@
+
+=================================================================================================
+STP:Spanning Tree Protocol		Cisco switches uses IEEE 802.1d version of STP,  prevents or avoid L2 loop when there is redundant link between switches
+
+
+Election of Root Bridge  (king  both ports will be active (link ---designated/forwarding)
+
+
+
+
+Bridge ID			--------					Bridge ID
+
+
+Bridge Priority(32768)					BP (32768)+ MAC address				
+
++
+MAC Address (AAA)							BBB
+
+
+
+
+
+BPDU Hello Packets after every 2 secs
+
+
+STP
+RSTP
+PVSTP
+PVSTP+
+MSTP
+
+STP States
+1. Blocking				20 secs
+2. Listening				15 secs				50 secs
+3. Learning				15 secs
+4. Forwarding 				sending user data
+5. Disabled			shutdown
+==============================================================================================
+Port-Security  very imp
+
+
+1. Port-Security: is used to restrict unauthorized traffic on a specified port.
+			: In port security, Specified ports can be reserve using a device MAC address
+				 so that no device can use that port.
+
+Port-security violation modes: 
+
+1 Shutdown(default): when reserved port received an unauthorized traffic, port will enter into shutdown mode
+
+
+2. Protect Mode: Port will not allow any unauthorized traffic to pass through reserved port. Only reserved pc's traffic will be allowed on reserved port. 
+
+3. Restrict Mode: Similar to protect mode, but it will also maintainS a log in syslog server.
+
+============================================================================
+Shutdown mode
+
+enable
+Sw#conf t
+config# int gi0/1
+	 # switchport mode access
+	  # switchport port-security
+	# switchport port-security maximum 1
+	#switchport port-security violation shutdown
+	#switchport port-secuirty mac-address 0001.xxxx.yyyy
+	#end
+	#show port-security
+	#show port-security int gi0/1
+
+		now connect pc0 to gi0/1	ping to 1.0.0.2
+		port will enter into shutdown mode
+
+		then remove pc0 cable, connect server cable to gi0/1, still it is in shutdown mode. To bring it up
+
+		config#int gi0/1
+				shutdown
+				no shutdown
+		
+====================================================================
+Protect mode
+
+enable
+Sw#conf t
+config# int gi0/2
+	 # switchport mode access
+	  # switchport port-security
+	# switchport port-security maximum 1
+	#switchport port-security violation protect
+	#switchport port-secuirty mac-address 0001.aaaa.bbbb
+	#end
+	#show port-security
+	#show port-security int gi0/2
+
+		now connect pc0 to gi0/2	ping to 1.0.0.2		(request time out), unauthorized traffic will be rejected
+		
+
+		then remove pc0 cable, connect laptop cable to gi0/2,  it will allow traffic of Laptop  (ping 1.0.0.2)
+
+		
+===============================================================================================
+Inter-vlan Communication: connecting multiple vlans
+
+			1. ROS(Router on Stick)					Router		
+			2. SVI	(Switched Virtual Interface)			MLS multi layer switch
+
+
+			vlan 10	connect		vlan 20
+			pc0					printer
+
+
+		VLAN Encapsulation/Frame tagging method:
+		1. ISL  inter-switch link cisco prop
+		2. IEEE dot1q			open standard
+
+
+
+
+		
+		sw0 gi0/1 					gi0/1 sw1
+
+		fa0/1	10				fa0/1	10  					
+		fa0/2	20				fa0/2	20
+		vlan 10 vlan20			vlan10   vlan 20
+
+==================================================================================================
+ACL
+NAT
+Protocols
+
+ 
+=============================================================================================
+ACL: Access Control List:
+
+	Controlling the network traffic which is passing through the router, is like a firewall
+
+			incoming/inbound traffic  & outgoing/outbound traffic
+
+	Types of ACL:
+		1. Standard ACL			1-99     extended acl range: 1300--1999
+		2. Extended ACL			100-199  extended acl range: 2000--2699
+	
+	ACL Configuration methods:
+		1. Numbered ACL: 	a. Standard ACL   b.Extended ACL
+		2. Named ACL:		a. Standard ACL   b.Extended ACL
+
+
+ACL Statement 	of deny:		explicit deny
+
+						implicit deny
+
+				access-list 10 deny host xxxx
+				
+
+			
+
+creating a ACL rule:				access-list 10 deny y.y.y.y
+			
+								access-list 10 permit any
+
+
+to apply acl rule						int s0/0
+									ip access-group 10 IN
+
+
+
+Standard ACl:
+1. preferebly configured on Destination router.
+2. can read / specify only source address.
+3. can block entire network, cannot be used to block specific ip/port/service.
+
+
+Extended ACl:
+1. preferebly configured on source router.
+2. can read both source address & destination address
+3. can be used to block specific ip, entire network, port/service.
+======================================================================================================
+
+
+NAT: Network Address Translation
+
+		translates private ip address to public ip address and vice-versa.
+
+		Private IP:---- also known as local address, unregistered address
+		Public IP:----also known as global address, registered address
+
+Private Address						Public Address
+1.Local Address						1. Global Address
+2. Unregistered Add						2. Registered Add
+3. used in LAN							3. Used over internet
+4. Cannot carry data traffic over			4. Can carry data over internet 
+	internet	
+
+A	10.0.0.0--10.255.255.255			A  1-126
+
+B	172.16.0.0--172.31.255.255			B  128-191
+
+C	192.168.0.0--192.168.255.255			C  192-223
+
+
+
+		
+Types of NAT:
+
+1. Static:  one to one mapping
+
+2. Dynamic: Dynamic mapping of Private to public ip add and vice-versa.
+
+3. NAT with Overload (PAT): multiple unregistered address can be mapped with single registered address.
+
+
+
+TCP
+
+FTP
+HTTP
+HTTPS
+Telnet
+SSH
+DNS
+NFS
+SMTP
+POP3
+IMAP
+
+
+
+
+UDP
+
+
+
+DNS
+TFTP
+DHCP
+========================================================
+
+Wild Card Masking:
+
+host   XXXXX
+
+
+192.168.100.0/24			access-list 10 deny 192.168.100.0 0.0.0.255		exactly 
+
+192.168.100.1
+
+
+
+
+
+192.168.100.254
+192.168.100.255
+
+
+
+192.168.1.0/28				16
+192.168.1.1
+
+
+
+
+		14
+192.168.1.15
+
+
+				access-list 10 deny 192.168.1.0      0.0.0.15			any
+
+
+
+
+172.16.0.0/16			access-list 10 deny 172.16.0.0  0.255.255.255		any
+
+
+
+
+
+172.17.1.2
+
+
+
+
+
+
+
+
+192.168.1.32/27   255.255.255.224		256-224===32
+
+
+0			32			36
+			33				
+
+
+
+			34
+
+			35
+				access-list 110 deny tcp 192.168.1.32 0.0.0.31   192.168.1.36  0.0.0.0 eq ftp
+-----------------------------------------------------------------
+
+
+permit		access-list 150 permit 192.168.1.16 0.0.0.15 30.0.0.3 0.0.0.0 eq ftp			explicit allow		
+						implicit deny
+
+
+			
+
+
+
+
+
+				access-list 150 permit 192.168.1.16 0.0.0.15 30.0.0.3 0.0.0.0 eq ftp
+
+
+
+
+
+
+Named	acl 
+
+			pc0					pc1		
+			
+
+
+
+===============================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bpdu stp		
+
+
+plain text			
+
+
+service password-encryption
+
+
+
+VLSM
+CIDR
+
+
+EIGRP  
+
+
+AD value
+
+
+static routing	0,1
+
+
+
+	
+int fa0/0
+ip nat inside
+exit
+int s0/0
+ip nat outside
+ ip nat pool cg 200.200.200.1 200.200.200.1 netmask 255.255.255.252
+ access-list 1 permit 192.168.1.0 0.0.0.31
+ip nat inside source list 1 pool cg overload
+
+end
+sh ip nat translations
+
+clear ip nat translation *		to clear the mapping/nat table entries
+
+
+
+Protocols: Set of rules that are used in for smooth communication between the devices
+
+SMTP Simple mail transfer protocol:  25 /tcp   outgoing mails
+POP3								110/tcp	incoming mails
+
+IMAPv4								143/tcp
+
+HTTP	hyper text transfer protocol		access webpage		80/tcp
+HTTPS	Secured HTTP				,,				443/tcp
+
+telnet		terminal emulation		remote access (cli access credentials are shared in plain text)
+
+
+			aaa
+			123
+
+
+ssh		secured shell				remote			cli		in encrypted format
+
+
+icmp		7/tcp/udp		internet control message protocol
+
+DNS		Domain Name System		53/tcp 53/udp
+
+			translate domain name into ip add and vice versa
+
+
+
+
+DHCP 		Dynamic Host Configuration protocol		assign ip to dhcp client		
+
+
+
+
+
+ARP  Address resolution protocol:  finds/translates given ip address into mac address
+
+
+RARP		Reverse ARP				translates MAC address into ip add
+
+
+
+
+
+
+
+		pc1						pc2					pc3
+		AAA						BBB					CCC
+
+		.1						.2					.3
+
+
+
+
+
+
+
+	ping .3		.1  .3   aaa   ccc
+		ARP			.3  ccc
+
+		.1	.3	AAA		ff:ff:ff:ff:ff:ff
+
+										.3	.1	CCC		AAA
+
+
+to view arp table on pc
+			cmd	arp -a
+to view arp table on Router
+			#sh arp
+
+
+Note: MAC addresses can travel beyond Routers boundary, they are local to that network.
+
+
+AAA			.1
+BBB			.2
+
+
+
+
+
+
+
+
+
+
+
+

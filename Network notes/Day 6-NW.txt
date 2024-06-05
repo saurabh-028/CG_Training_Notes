@@ -1,0 +1,286 @@
+Good Morning All..............
+
+
+Dynamic Routing
+1. In this, Routing protocols are resposible for searching available nws in the internetworks.
+2. Less burden/overhead on Administrator, but more on Router's CPU and Memory.
+3. Suitable for Large internetworks.
+
+	Types of Dynamic Routing
+		1. DVRP	(Distance Vector Routing Protocol			examples: RIP and IGRP
+		2. LSRP	(Link state Routing Protocol)					IS-IS, OSPF	
+		3. Hybrid (Advanced DVRP)								EIGRP
+
+			Routed Protocols:	delivering data from source to destination on the defined path---IPv4, IPv6
+100.0.0.0
+
+
+RIP: Routing Information protocol
+IGRP: Interior Gateway Routing Protocol
+IS-IS: Intermediate System-Intermediate System
+OSPF: Open Shortest Path First
+EIGRP: Enhanced IGRP
+
+
+		
+		IRP							ERP
+	Interior RP						Exterior RP
+
+		IGP								EGP
+		Interior Gateway P				Exterior Gateway P
+		RIP, IS-IS, OSPF, EIGRP				BGP(Border Gateway Protocol)
+		IGRP
+
+		routing within domain				between the domain
+
+
+===============================================================================================
+AS Number  (Autonomous System Number)	ASN value		A group of routers under single administrative control
+
+
+IANA (Internet Assigned Numbers authority)
+
+===========================================================================================
+AD Value			IMP		Administrative Distance   (0-255)		Ranking---Cisco....> Routing Protocols
+
+defines the trustworthyness of routing protocol, lowest the value, highest the trustworthyness
+
+Static(connected)				0
+Static(next hop)				1
+RIP							120
+IGRP							100
+IS-IS						115
+OSPF							110
+EIGRP (Internal)				90
+EIGRP (External)				170		
+=====================================================================================================
+	Classfull Routing									Classless Routing
+	
+
+	R0					R1		
+	10.0.0.0/8			10.0.0.0(R0)					10.0.0.0/8
+		
+
+
+	10.0.0.0/24			10.0.0.0(R)					10.0.0.0/24	
+	10.0.0.1
+	10.0.0.254
+
+
+	sends only nw info, but not the subnet mask				sends nw info as well as subnet mask info
+
+
+
+	RIPv1,IGRP											RIPv2, IS-IS, OSPF, BGP, EIGRP
+
+
+	doesnot support VLSM								supports VLSM
+	no ip subnet zero									supports ip subnet zero
+	
+
+192.168.100.0/26
+							
+0		64		128			192
+
+
+
+63		127		191			255
+==============================================================================================
+
+
+
+
+
+
+
+R0			R1			R2				
+
+120/2
+
+
+Periodic updates  (convergence--exchanging infn) after every 30 secs
+
+slow  convergence 
+
+not support triggered update
+
+
+
+
+
+30
+180
+180		60secs flush
+240
+
+
+
+1. DVRP  Dynamic Routing
+2. AD value:120
+3. algorithm Bellman Ford
+4. Open Standard RP		
+5. Periodic update after every 30 secs(route update),  invalid timer=180 secs, holdown timer=180 secs, flush timer=240secs
+6. slow convergence
+7. RIPv1 & 2
+8. Max hop count 15-  16th router is unreachable
+9. RIPv2 uses multicast add 224.0.0.9
+10. metrix: hop count
+11. Port=UDP/520
+			
+					10.0.0.0		11.0.0.0		12.0.0.0		contigous nw
+					10.0.0.0/8 	15.0.0.0/16	17.0.0.0		discontigous
+
+
+
+
+12. Suitable for small internetworks.
+13. supports summarization
+
+
+			
+r1----------------										r15	   r16 (unreachable)			
+
+
+
+
+-----------------------------------------------------------------------------------------------------
+			
+1.Enhanced IGRP
+2. example of Hybrid (Adv DVRP)
+3. AD value 90 & 170
+4. Cisco prop protocols
+5. Classless RP
+6. supports VLSM
+7. supports ip subnet zero
+8. Hop count=100 default 255 maximum
+9. Support summarization manual & auto
+10. triggered update (incremental updates)
+11. Updates are in the form of Multicast using 224.0.0.10
+12. best rp among dynamic rp
+13. EIGRP metrics:  Bandwidth, delay of line, load , MTU(Max transmission unit), Reliability
+					tcp/ip  1518bytes
+			tx
+			rx 255/255
+							time taken to send data from source to dest
+
+14. 3 types of EIGRP packets:
+			1. Hello Packets and ACK packets  (neighbor  discovery /recovery )
+			2. Route update packets				sending routing table			
+			3. Query (multicast) and reply packets	(unicast)		
+15.  DUAL-- Diffusing update algorithm			D
+
+16. Uses Reliable Transport Protocol(RTP) sends unicast packet, in case of not getting Ack packets from neighbor router.
+17. Sends Hello Packets after every 5 secs.
+
+18. Condition for neighborship relationship.
+		a. AS Number should be same	
+		b. Hello & ACK packet should be sent and received
+		c. Metric should be same
+					
+
+
+
+loopback interface  : to assign multiple ips regardless of ports available
+					testing and troubleshooting
+
+
+	config# int loopback0
+			ip add 5.0.0.1 255.0.0.0
+		config# int loopback1
+			ip add 7.0.0.1 255.0.0.0
+
+		config#router eigrp 200
+				network 5.0.0.0
+				network 7.0.0.0
+			end
+			sh ip int bri
+				
+
+			goto any pc:
+				cmd--- ping 5.0.0.1
+					  ping 7.0.0.1
+
+===================================================================
+
+CDP: Cisco Discovery protocol
+
+		1. Cisco prop protocol			
+
+		2. works at L2
+		3. not a routing protocol
+		4 helps to gather neighbor info (Hw , Sw , firmaware, ip add etc)
+		5. enabled by default
+		6. sends cdp packets after every 60 secs with all connected Cisco devices.
+
+		#show cdp
+		#show cdp neighbors
+		#show cdp neighbors details
+
+
+
+
+
+
+		huawei		DLINK
+
+		LLDP			open standard discovery protocol
+
+			link layer discovery protocol is used with non-Cisco devices--> helps to gather neighbor info (Hw , Sw , 						firmaware, ip add etc)
+
+			
+
+
+		show lldp
+		show lldp neighbor
+		show lldp neighbor details
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

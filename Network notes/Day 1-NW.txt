@@ -1,0 +1,1004 @@
+Day1
+
+M2 Network Administration  100 Marks: 3.5hrs+1 hrs	
+=======================================================
+
+CCNA		Cisco Certified Network Associates 		Cisco 
+
+
+2 hrs
+
+MCQ
+
+825/1000
+
+40-44
+
+
+	Rs.16000-22000  exam fees   (dollar value)
+
+
+pearson vue:
+
+
+CCENT			ICND1 + ICND2
+CCNA
+CCNP		Network Professional  3 papers
+
+CCIE		Internetwork Expert
+
+
+CCA				CC Architechture
+====================================================================================================
+
+Network  	Host/node/terminal/pc/client/Server/workstations
+
+
+
+
+			wired (Speed)  & wireless(mobility)-- 
+
+
+Pc1 	 NW		Pc2				Pc3
+
+
+Hw requirement						SW requirement
+
+NIC card							NIC Drivers
+cable
+								TCP/IP
+connector
+
+
+Switch/Hub
+------------------------------------------------------------------------------
+
+optional:
+router/modems
+
+
+
+
+Types of Networking
+
+
+1. LAN  (TAN/PAN/CAN)   Personal Area/Campus Area/Tiny Area)   within  1  Km
+2. MAN					network between a cities (80 Kms)
+3. WAN			network of networks
+
+4. SAN  Storage Area Network
+
+---------------------------------------------------------------------------------------------------
+
+tracert:   helps to find the path to reach the destination page.
+---------------------------------------------------------------------------------------------
+
+
+Number Systems:
+ 1. Binary				0 1  (2)
+ 2. Decimal				0-9	(10)
+ 3. Octal				0-7	(8)
+ 4. Hexa Decimal			0-9 A-F  (16)
+
+
+
+
+			bit		0 or 1
+			2 bits	00   01   10   11
+
+			4 bits	1 nibble			0011
+			8 bits		1Byte		00001111
+
+
+
+
+	ABC  
+
+
+		1KB		1024 Bytes
+		1MB		1024 KB
+		1GB		1024 MB
+		1TB		1024 GB
+		1PB		1024 TB Peta
+		1EB		1024 PB Exa
+		1ZB		1024 EB  Zeta
+		1YB		1024 ZB	Yotta
+		1BB		1024 YB		Brunto
+
+		1GiB		1024 BB		GeoP Byte
+
+
+1000Bps			1000bps
+
+
+
+
+b bits
+B Bytes
+
+
+
+
+
+
+mbps		MBps
+=======================
+
+Decimal 			Binary
+0				00000000
+1				00000001
+2				00000010
+3				00000011				
+
+
+
+
+
+
+
+
+
+9
+10
+11
+
+
+
+
+19
+20				
+
+
+(0-255)
+
+					2^7												2^0
+
+					128		64		32		16		8  	 4		2	1
+
+0					0		0		0		0		0	0		0	0
+
+
+
+10					0      	0		0		0		1	  0		1	0
+
+
+
+
+
+65					0		1		0		0		0	  0		0	1
+
+
+
+
+
+
+
+127					0		1		1		1		1	1		1	1
+
+
+165
+
+252
+255					1		1		1		1		1	1		1	1
+
+
+
+
+
+
+
+
+
+
+					(11110000)2------>(?)10
+
+
+
+
+
+
+
+Decimal 			Hexa Decimal
+
+0-9				0-9 A-F
+
+0				0
+1				1
+
+
+
+
+
+
+
+9				9
+10				A
+11				B
+12				C
+13				D
+14				E
+15				F
+16				10
+17				11
+
+
+
+
+				1F
+				20
+				A0
+
+
+
+
+				F0
+				
+
+255				FF
+
+
+							
+
+
+
+					(75)10	----->  (?)16
+
+
+				
+
+
+
+Binary --->			decimal	---->			Hexa-Decimal
+
+11001001				
+
+
+B--HD				8	4	2	1		8	4	2	1
+
+
+
+				1	1	0	0		1	0	0	1
+C9
+
+
+
+------------------------------------------------------------------------------------------
+IP Addressing:
+
+
+IP Address		unique identification of a device over a nw.
+
+				logical address / temporary address
+					decimal format
+				        10.0.0.1					8.8.8.8	
+
+
+					00001010.00000000.00000000.00000001				
+					 1 octet			
+
+					
+Types of IP address:
+				Public IP Address				Private IP Address			 
+				
+
+
+
+
+Versions			Ipv4						Ipv6
+				32 bits(4 Bytes)				128 bits			
+
+
+
+Ip Address Assignment			Static						Dynamic
+
+						Manually 				   			DHCP (Router)
+
+
+
+==============================================================================================================
+
+
+MAC Address:			Media Access Control
+
+
+			ethernet add/Hardware add/Physical Address
+
+			assigned by Manufacturer 
+			
+				permanent address
+
+
+				MAC Addresses are local to the nw (it cannot travel/passed beyond router)
+
+1. unique identification of a device over a nw.
+2.	unique universally		AAA
+
+3.		48bits	6 Bytes
+
+4.			hexa decimal format
+				:  -
+
+							00:1c:af          		    :bb:44:ec
+
+								24bits				24 bits
+		
+								OUI					Interface ID
+					Organizationally Unique IDentifier		
+
+
+
+
+
+
+						intel		00:1c:af
+						intel		00:1c:af
+
+
+-------------------------------------------------------------------------------
+			why we need two addresses?			IP Add +   MAC Address
+
+
+
+-----------------------------------------------------------------------------------------------------------
+Classes Of Ip Adresses:
+
+A		0-127		(1-126)		0---default routing		127  loopback address	
+
+								127.0.0.1  (localhost)--- self test  (to check whether TCP/IP stack is installed /working properly or not?
+B		128-191
+C		192-223
+---------------------------------------------------------------------------------------------
+
+D		224-239			Multicasting		
+E		240-255				R& D	US Gov
+
+
+
+
+
+
+
+
+Unicast:  one to one								
+Multicast:  one to many not all
+Broadcast: one to all
+
+
+
+
+Router				100 routers
+
+
+
+
+
+
+			224.0.0.1	
+=========================================================================================
+Hosts/nw			Rough value
+
+Class A		1-126
+
+				8.8.8.8
+				n.h.h.h			8bits==nw	portion			24--host portion
+
+
+								2^8=256 nws					2^24==16777216	host
+
+
+
+Class B			8.8.8.8			16bits==nw	portion			16--host portion
+				n.n.h.h			2^16==65536					2^16==65536		
+
+
+
+
+Class C			8.8.8.8			24bits==nw	portion			8--host portion
+				n.n.n.h			2^24===16777216 Nws			2^8==256 ips
+
+
+
+
+================================================================================================
+Hosts/nw			
+
+Class A		1-126
+1			0	0000001					0		leading bit  1 bit is common throughout the range
+126			0	1111110
+
+
+Class B		128-191
+128			10000000					10		leading bit  2 bits is common throughout the range
+191			10111111
+
+Class C		192-223
+
+192			11000000					110		leading bit  3 bits is common throughout the range
+223			11011111
+
+
+================================================================================
+Final Value:
+
+Class A		1-126						1.0.0.1--------126.255.255.254  valid IPs
+
+										1.0.0.0-------	126.255.255.255
+
+				8.8.8.8
+				n.h.h.h			8bits==nw	portion					24--host portion
+
+								1  7 UC bits
+								2^7==128   XXXX  (10000000)
+								128-1=127   nws  XXXX
+
+							127-1 ===126 NWs						16777216-2==16777214  All ones and all 0's not 	
+
+								
+
+																					allowed			
+======================================================================================================================
+
+
+
+
+
+
+
+
+
+Nw1
+
+
+1.0.0.0
+
+1.0.0.1
+1.0.0.2
+
+
+
+
+1.255.255.254
+1.255.255.255					b'cast address for 1's nw
+
+00000001.1111111.11111111.1111111
+
+
+
+2.0.0.0				nw address
+
+
+
+
+
+
+
+2.255.255.255				b'cast address for 2's nw
+
+
+
+
+
+3.0.0.0					nw address
+
+
+
+
+
+
+
+3.255.255.255
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+126.0.0.0
+
+
+
+
+
+
+
+126.255.255.255
+
+
+
+
+
+
+
+				9821  210251				shazia
+
+				NW	user
+
+
+
+
+
+			pc1				pc2				pc3					p10				p11
+
+			1.0.0.1			1.0.0.2		1.0.0.5				1.0.0.255				2.0.0.1
+
+
+			S ip		Dest ip
+
+			1.0.0.1	1.255.255.255
+
+
+=================================================================================================
+
+
+Class B			8.8.8.8			16bits==nw	portion			16--host portion
+				n.n.h.h			2^16==65536					2^16==65536	
+
+	128-191							2  14 UC	
+
+								2^14==16384 nws				2^16==65536-2==65534 hosts/nw
+
+
+	128.0.0.0----191.255.255.255---128.0.0.1----191.255.255.254
+
+
+128.0's nw		
+				
+128.0.0.0
+128.0.0.1							
+
+
+
+
+
+
+128.0.255.254
+128.0.255.255
+
+
+
+
+128.1.0.0
+128.1.0.1							
+
+
+
+
+
+
+128.1.255.254
+128.1.255.255
+
+
+
+
+
+
+
+
+
+
+191.255.0.0
+
+
+
+
+
+
+191.255.255.255
+
+pc1					pc2
+	
+10.3.4.4				10.1.1.1
+				
+
+
+
+
+172.16.1.3			172.16.4.5
+
+============================================================
+
+Class C			8.8.8.8			24bits==nw	portion			8--host portion
+				n.n.n.h			2^24===16777216 Nws			2^8==256 ips
+
+
+									3C 	21UC
+									2^21== 2097152 nws			256-2=254
+						192.0.0.0----------------223.255.255.255
+						192.0.0.1----------------223.255.255.254  valid range of classc 
+
+192-223
+
+
+
+
+192.0.0.0
+
+192.0.0.1
+
+
+
+
+
+192.0.0.254
+192.0.0.255
+
+
+
+192.0.1.0
+
+
+
+
+
+
+
+
+192.0.1.255
+
+
+
+
+192.255.255.0
+
+
+
+
+
+
+
+
+
+
+223.255.255.0
+
+
+
+
+
+223.255.255.255
+
+
+
+
+Subnet Mask: helps to differentiate between nw and host bits
+
+
+A			n.h.h.h
+			255.0.0.0
+
+B			n.n.h.h
+			255.255.0.0
+
+c			n.n.n.h
+			255.255.255.0
+===============================================================================
+
+CCNA by Todd Lammle
+
+==================================================================================
+
+CIDR  Classless Inter-Domain Routing-----> nw bits
+
+
+Subnet Mask							CIDR	
+
+
+128.0.0.0								/1		
+
+10000000.00000000.00000000.00000000
+
+
+
+192.0.0.0
+
+11000000.00000000.00000000.00000000		/2
+
+
+255.0.0.0								/8
+11111111.00000000.00000000.00000000
+
+
+255.128.0.0							/9
+11111111.10000000.00000000.00000000		
+
+									/10
+					
+
+
+
+
+
+
+255.255.192.0							/18
+11111111.11111111.11000000.00000000		
+
+
+
+
+
+
+
+									
+255.255.255.255						/32
+
+
+
+
+								/25
+=========================================================
+
+A:  10.0.0.0		/8
+B:  172.16.0.0		/16
+C:  192.168.100.0	/24
+
+
+=============================================================
+
+Cabling
+
+1. Co-axial	   	BNC			Bayont neil conceleman			
+			thinnet					thicknet
+
+			10base2					10base5
+
+			10mbps					10mbps
+			baseband					baseband
+			200(185) mtrs				500 mtrs
+
+
+			EMI		Electro magnetic interference
+
+			------------------------
+			---------------------------------	
+
+
+2. Twisted Pair  LAN
+3. Fiber Optics
+
+
+
+
+
+
+
+data					text (alphabet/number)
+					images
+					audio
+					video
+
+
+------------------------------------------------------
+Twisted Pair Cable		RJ 11		4 wires			2 pairs		telephone
+					RJ 45		8 wires			4 pairs		networking		
+	100Mtrs			
+
+
+Registered Jack
+
+
+UTP		Unsheilded TP				cheaper
+
+STP		Sheilded	TP
+Twisting avoids Cross talk
+
+
+
+										
+CAT1			telephone			voice		1mbps
+
+CAT2			token ring					4mbps
+CAT3			ethernet						10mbps
+CAT4			token ring					16mbps
+CAT5			ethernet						100mbps
+
+CAT 5E		,,							1Gbps
+CAT6			,,							10gbps
+
+
+
+===================================================================
+Fiber Optics Cable			expensive
+								
+
+long distance data transmission
+
+
+			installation 
+
+			OTDR
+
+
+
+ST & SC			Straight Tip			Straight Carrier		connectors
+
+
+
+
+
+
+
+tiffin box			
+
+--------------------
+
+
+Topology:  NW design/layout
+
+
+physical			NW design		
+logical			methods/protocols that are used to transmit data
+
+				
+
+
+it will avoid bounce back of a signal  (absorbs signal)---terminator
+
+
+
+
+
+
+Ring Topology					Dual Ring Topology FDDI	(Fiber Distributed Data interface)
+
+
+
+
+MAU		MSAU
+
+
+
+
+
+
+
+LAN 		Star-bus toplogy
+=============================================================
+
+
+
+
+CSMA/CD   wired  & CSMA/CA	 wireless		protocols
+
+
+CSMA/CD: Carrier Sense Multiple Access/Collision Detection
+
+
+
+CSMA/CA:  Carrier Sense Multiple Access/Collision Avoidance
+
+	Collision:  when two or more devices share data at the same time over the shared medium, there will be data collision.
+
+
+
+
+
+
+
+Mode Of Communications
+
+Duplex:		ability to send and receive data
+1. Simplex			Sender	--------------->Receiver
+					kbd		-------------> CPU
+
+
+Half Duplex			ability to send & receive data one at a time
+Full Duplex			ability to send & receive data one at the same time
+
+
+
+
+PC  (FD)				PC---PC			FD
+Hub		HD
+
+				hub----hub			HD
+				pc-----hub			HD					
+
+
+Switch (FD)		sw----sw				FD
+				sw---hub				hd
+				pc---sw				FD			
+Router  (FD)		R----R				FD
+				R---Hub				HD
+				R---Sw				FD
+
+
+================================================================
+Twisted Pair Cable
+
+
+			Types of crimping
+
+
+	1
+			1-------------------------------------2
+
+
+earthing/power supply
+
+
+
+
+1. Straight Through
+
+				pc-- Sw
+				pc---hub
+				router---hub
+				router---switch
+
+1	----		1
+2	-----	2
+3	-----	3
+6	-----	6
+	
+2. Cross Over
+
+				pc---pc
+				hub----hub
+				sw-----sw
+				router---router
+		exception		router---pc
+Cross Over Cable Crimping:
+1			3
+2			6
+3			1
+4			4
+5			5
+6			2
+7			7
+8			8
+
+
+
+
+1	--	3
+2	--	6
+3	--	1
+6	--	2
+
+
+		
+3. Rolled Over 			console cable			to access router/switch IOS/console to 												configure the device
+
+EIA/TIA			
+
+
+
+Cosole Cable Crimping
+
+
+1	----		8	
+2	----		7
+3	----		6
+4	----		5
+5	----		4
+6	----		3
+7	----		2
+8	----		1
+
+
+
+
+
+
+
